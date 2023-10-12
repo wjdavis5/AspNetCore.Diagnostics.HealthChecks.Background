@@ -6,13 +6,9 @@
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Adesa\**" />
-    <EmbeddedResource Remove="Adesa\**" />
-    <None Remove="Adesa\**" />
-  </ItemGroup>
-
+<PropertyGroup>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+</PropertyGroup>
   <ItemGroup>
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
 	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />

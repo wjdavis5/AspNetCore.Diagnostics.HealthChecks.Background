@@ -1,13 +1,13 @@
-name: Build and Publish
+name: Build, Pack and Publish
 
 on:
   push:
     branches:
-      - main  # Trigger this action when you push to the main branch. You can adjust this as needed.
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest  # Since it's a C# project, it's likely you'd want a Windows runner.
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '6.0.x'  # Adjust the .NET version as needed.
+        dotnet-version: '6.0.x' 
 
     - name: Restore dependencies
       run: dotnet restore HealthCheck.sln
@@ -24,12 +24,9 @@ jobs:
     - name: Build solution
       run: dotnet build HealthCheck.sln --configuration Release --no-restore
 
-    - name: Publish project
-      run: dotnet publish ./Adesa.Platform.HealthChecks/Adesa.Platform.HealthChecks.csproj --configuration Release --no-build --output ./published
+    - name: Pack project
+      run: dotnet pack ./Adesa.Platform.HealthChecks/Adesa.Platform.HealthChecks.csproj --configuration Release --no-build -o ./nupkg
 
-    # Optional: If you want to archive the published artifacts
-    - name: Archive published artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: published-artifact
-        path: ./published/
+    - name: Publish to NuGet
+      run: dotnet nuget push ./nupkg/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
