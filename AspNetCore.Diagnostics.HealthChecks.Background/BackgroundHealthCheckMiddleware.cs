@@ -20,7 +20,7 @@ namespace Microsoft.Extensions.DependencyInjection
         private readonly BackgroundHealthCheckPublisher _healthCheckPublisher;
 
         /// <summary>
-        /// Creates a new instance of <see cref="Adesa.Platform.HealthChecks.BackgroundHealthCheckMiddleware"/>.
+        /// Creates a new instance of <see cref="AspNetCore.Diagnostics.HealthChecks.Background.BackgroundHealthCheckMiddleware"/>.
         /// </summary>
         public BackgroundHealthCheckMiddleware(
             RequestDelegate next,

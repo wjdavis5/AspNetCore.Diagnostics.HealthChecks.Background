@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Adesa.Platform.HealthChecks\AspNetCore.Diagnostics.HealthChecks.Background.csproj" />
+    <ProjectReference Include="..\AspNetCore.Diagnostics.HealthChecks.Background\AspNetCore.Diagnostics.HealthChecks.Background.csproj" />
   </ItemGroup>
 
 </Project>

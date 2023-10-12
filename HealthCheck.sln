@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheckLab", "HealthCheckLab\HealthCheckLab.csproj", "{B03D0380-4999-4508-A119-A0858A2EBCF8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Diagnostics.HealthChecks.Background", "Adesa.Platform.HealthChecks\AspNetCore.Diagnostics.HealthChecks.Background.csproj", "{620EA327-BC85-4A9A-9629-033732D9D784}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Diagnostics.HealthChecks.Background", "AspNetCore.Diagnostics.HealthChecks.Background\AspNetCore.Diagnostics.HealthChecks.Background.csproj", "{620EA327-BC85-4A9A-9629-033732D9D784}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
