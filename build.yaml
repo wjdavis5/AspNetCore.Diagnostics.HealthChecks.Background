@@ -1,0 +1,35 @@
+name: Build and Publish
+
+on:
+  push:
+    branches:
+      - main  # Trigger this action when you push to the main branch. You can adjust this as needed.
+
+jobs:
+  build:
+    runs-on: windows-latest  # Since it's a C# project, it's likely you'd want a Windows runner.
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'  # Adjust the .NET version as needed.
+
+    - name: Restore dependencies
+      run: dotnet restore HealthCheck.sln
+
+    - name: Build solution
+      run: dotnet build HealthCheck.sln --configuration Release --no-restore
+
+    - name: Publish project
+      run: dotnet publish ./Adesa.Platform.HealthChecks/Adesa.Platform.HealthChecks.csproj --configuration Release --no-build --output ./published
+
+    # Optional: If you want to archive the published artifacts
+    - name: Archive published artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: published-artifact
+        path: ./published/
