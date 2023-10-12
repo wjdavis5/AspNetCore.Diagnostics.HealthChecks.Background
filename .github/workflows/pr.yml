@@ -1,0 +1,30 @@
+name: Build on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main  # Trigger this action for pull requests targeting the main branch.
+
+jobs:
+  build:
+    runs-on: windows-latest  # Since it's a C# project, a Windows runner might be suitable.
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'  # Adjust the .NET version as needed.
+
+    - name: Restore dependencies
+      run: dotnet restore HealthCheck.sln
+
+    - name: Build solution
+      run: dotnet build HealthCheck.sln --configuration Release --no-restore
+
+    # Optionally, you could also run tests here if you have any:
+    #- name: Run tests
+    #  run: dotnet test HealthCheck.sln --configuration Release --no-build
+
