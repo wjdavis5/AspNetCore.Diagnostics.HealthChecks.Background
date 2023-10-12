@@ -7,7 +7,13 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 <PropertyGroup>
+    <Version>0.1.0</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Description>Execute health checks in the background and return their results at the health endpoint</Description>
+    <PackageProjectUrl>https://github.com/wjdavis5/AspNetCore.Diagnostics.HealthChecks.Background</PackageProjectUrl>
+    <Authors>wjdavis5</Authors>
+    <RepositoryUrl>https://github.com/wjdavis5/AspNetCore.Diagnostics.HealthChecks.Background</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
 </PropertyGroup>
   <ItemGroup>
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
