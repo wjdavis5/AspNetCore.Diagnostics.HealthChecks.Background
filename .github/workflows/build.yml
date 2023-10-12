@@ -25,8 +25,8 @@ jobs:
       run: dotnet build HealthCheck.sln --configuration Release --no-restore
 
     - name: Pack project
-      run: dotnet pack ./Adesa.Platform.HealthChecks/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o ./nupkg
+      run: dotnet pack ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o ./nupkg
 
     - name: Publish to NuGet
-      run: dotnet nuget push ./AspNetCore.Diagnostics.HealthChecks.Background/nupkg/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
 
