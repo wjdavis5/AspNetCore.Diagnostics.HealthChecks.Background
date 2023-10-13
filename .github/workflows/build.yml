@@ -28,5 +28,5 @@ jobs:
       run: dotnet pack ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o ./nupkg
 
     - name: Publish to NuGet
-      run: dotnet nuget push ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background/bin/Release/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push D:\a\AspNetCore.Diagnostics.HealthChecks.Background\AspNetCore.Diagnostics.HealthChecks.Background\nupkg\*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
 
