@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 <PropertyGroup>
-    <Version>0.2.2</Version>
+    <Version>0.3.2</Version>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <Description>Execute health checks in the background and return their results at the health endpoint</Description>
     <PackageProjectUrl>https://github.com/wjdavis5/AspNetCore.Diagnostics.HealthChecks.Background</PackageProjectUrl>
     <Authors>wjdavis5</Authors>
     <RepositoryUrl>https://github.com/wjdavis5/AspNetCore.Diagnostics.HealthChecks.Background</RepositoryUrl>
     <RepositoryType>github</RepositoryType>
+    <PackageTags>AspNetCore;HealthChecks;Health Checks</PackageTags>
 </PropertyGroup>
   <ItemGroup>
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
