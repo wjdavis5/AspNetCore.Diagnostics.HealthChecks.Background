@@ -56,6 +56,10 @@ namespace Microsoft.Extensions.DependencyInjection
                     break;
                 }
             }
+            if (_healthCheckPublisher == null)
+            {
+                throw new InvalidOperationException("No BackgroundHealthCheckPublisher found.");
+            }
         }
 
         /// <summary>
