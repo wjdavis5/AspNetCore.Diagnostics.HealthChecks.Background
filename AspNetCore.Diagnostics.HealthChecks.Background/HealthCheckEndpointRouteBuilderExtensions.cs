@@ -61,14 +61,14 @@ public static class BackgroundHealthCheckEndpointRouteBuilderExtensions
     {
         if (endpoints.ServiceProvider.GetService(typeof(HealthCheckService)) == null)
         {
-            throw new InvalidOperationException("Unable to find services for background health checks");
+            throw new InvalidOperationException("HealthCheckService is not registered in the service provider.");
         }
         
 
-        var args = options != null ? new[] { Options.Options.Create(options) } : Array.Empty<object>();
+        var middlewareArgs = options != null ? new object[] { Options.Options.Create(options) } : Array.Empty<object>();
         
         var pipeline = endpoints.CreateApplicationBuilder()
-            .UseMiddleware<BackgroundHealthCheckMiddleware>(args)
+            .UseMiddleware<BackgroundHealthCheckMiddleware>(middlewareArgs)
             .Build();
 
         return endpoints.Map(pattern, pipeline).WithDisplayName(DefaultDisplayName);

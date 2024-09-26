@@ -46,7 +46,8 @@ namespace Microsoft.Extensions.DependencyInjection
             _next = next;
             _healthCheckOptions = healthCheckOptions.Value;
             _healthCheckService = healthCheckService;
-            _healthCheckPublisher = (BackgroundHealthCheckPublisher) healthCheckPublisher;
+            _healthCheckPublisher = healthCheckPublisher as BackgroundHealthCheckPublisher 
+                ?? throw new ArgumentException("Invalid health check publisher type.", nameof(healthCheckPublisher));
         }
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             else
             {
-                result = _healthCheckPublisher.GetLastReport()!;
+                result = await _healthCheckPublisher.GetLastReport() ?? throw new InvalidOperationException("Last health report is null.");
             }
             // Map status to response code - this is customizable via options.
             if (!_healthCheckOptions.ResultStatusCodes.TryGetValue(result.Status, out var statusCode))
