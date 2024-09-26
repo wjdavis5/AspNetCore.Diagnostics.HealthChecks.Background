@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AspNetCore.Diagnostics.HealthChecks.Background;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -26,7 +28,7 @@ namespace Microsoft.Extensions.DependencyInjection
             RequestDelegate next,
             IOptions<HealthCheckOptions> healthCheckOptions,
             HealthCheckService healthCheckService,
-            IHealthCheckPublisher healthCheckPublisher)
+            IEnumerable<IHealthCheckPublisher> healthCheckPublishers)
         {
             if (next == null)
             {
@@ -46,8 +48,14 @@ namespace Microsoft.Extensions.DependencyInjection
             _next = next;
             _healthCheckOptions = healthCheckOptions.Value;
             _healthCheckService = healthCheckService;
-            _healthCheckPublisher = healthCheckPublisher as BackgroundHealthCheckPublisher 
-                ?? throw new ArgumentException("Invalid health check publisher type.", nameof(healthCheckPublisher));
+            foreach(var healthCheckPublisher in healthCheckPublishers)
+            {
+                if (healthCheckPublisher is BackgroundHealthCheckPublisher backgroundHealthCheckPublisher)
+                {
+                    _healthCheckPublisher = backgroundHealthCheckPublisher;
+                    break;
+                }
+            }
         }
 
         /// <summary>
