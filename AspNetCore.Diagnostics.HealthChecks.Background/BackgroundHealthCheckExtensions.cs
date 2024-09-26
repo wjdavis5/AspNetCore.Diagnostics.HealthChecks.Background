@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class BackgroundHealthCheckExtensions
     {
         public static IHealthChecksBuilder AddBackgroundHealthChecks(
-            this IServiceCollection services, IConfiguration configuration)
+            this IServiceCollection services)
         {
             services.AddSingleton<IHealthCheckPublisher, BackgroundHealthCheckPublisher>();
             return services.AddHealthChecks();

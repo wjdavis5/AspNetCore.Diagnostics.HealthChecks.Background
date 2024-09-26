@@ -7,22 +7,30 @@ namespace AspNetCore.Diagnostics.HealthChecks.Background;
 public class BackgroundHealthCheckPublisher : IHealthCheckPublisher
 {
     private HealthReport? _lastReport;
-    private static readonly object Lock = new();
+    private static readonly SemaphoreSlim _semaphore = new(1, 1);
 
-    public HealthReport? GetLastReport()
+    public async Task<HealthReport?> GetLastReport(CancellationToken cancellationToken = default)
     {
-        lock (Lock)
+        try
         {
-            return _lastReport;
+            await _semaphore.WaitAsync(cancellationToken);
         }
-    }
-    public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
-    {
-        lock (Lock)
+        finally
         {
+            _semaphore.Release();
+        }
+        return _lastReport;
+    }
+    public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await _semaphore.WaitAsync(cancellationToken);
             _lastReport = report;
         }
-
-        return Task.CompletedTask;
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 }
