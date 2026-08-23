@@ -7,7 +7,10 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # for NuGet Trusted Publishing (OIDC)
+      contents: read
 
     steps:
     - name: Checkout code
@@ -28,12 +31,17 @@ jobs:
       run: dotnet test HealthCheck.sln --configuration Release --no-build
 
     - name: Pack project
-      run: dotnet pack ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o ./nupkg
+      run: dotnet pack ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o nupkg
 
-    - name: Publish to NuGet
-      shell: pwsh
-      run: |
-        Get-ChildItem ./nupkg/*.nupkg | ForEach-Object {
-          dotnet nuget push $_.FullName -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-        }
+    - name: NuGet login (OIDC -> temp API key)
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: wjdavis5
+
+    - name: Push to nuget.org
+      run: >
+        dotnet nuget push "nupkg/*.nupkg"
+        --api-key "${{ steps.login.outputs.NUGET_API_KEY }}"
+        --source https://api.nuget.org/v3/index.json
+        --skip-duplicate
