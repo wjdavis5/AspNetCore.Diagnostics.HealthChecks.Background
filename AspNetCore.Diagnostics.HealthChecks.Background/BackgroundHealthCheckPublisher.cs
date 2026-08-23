@@ -1,36 +1,30 @@
-﻿using System.Threading;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace AspNetCore.Diagnostics.HealthChecks.Background;
 
+/// <summary>
+/// Captures each <see cref="HealthReport"/> produced by the background publisher runs
+/// so the most recent one can be served from the health endpoint.
+/// </summary>
 public class BackgroundHealthCheckPublisher : IHealthCheckPublisher
 {
-    private HealthReport? _lastReport;
-    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+    // Reference writes are atomic; volatile is enough for readers to observe the
+    // latest published report without locking.
+    private volatile HealthReport? _lastReport;
 
-    public async Task<HealthReport?> GetLastReport(CancellationToken cancellationToken = default)
+    /// <summary>
+    /// Returns the most recently published <see cref="HealthReport"/>, or
+    /// <c>null</c> if the background publisher has not run yet.
+    /// </summary>
+    public Task<HealthReport?> GetLastReport(CancellationToken cancellationToken = default)
+        => Task.FromResult(_lastReport);
+
+    /// <inheritdoc />
+    public Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
     {
-        try
-        {
-            await _semaphore.WaitAsync(cancellationToken);
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
-        return _lastReport;
-    }
-    public async Task PublishAsync(HealthReport report, CancellationToken cancellationToken)
-    {
-        try
-        {
-            await _semaphore.WaitAsync(cancellationToken);
-            _lastReport = report;
-        }
-        finally
-        {
-            _semaphore.Release();
-        }
+        _lastReport = report;
+        return Task.CompletedTask;
     }
 }

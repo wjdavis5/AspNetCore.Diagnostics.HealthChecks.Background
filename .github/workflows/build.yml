@@ -11,12 +11,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x' 
+        dotnet-version: '8.0.x'
 
     - name: Restore dependencies
       run: dotnet restore HealthCheck.sln
@@ -24,9 +24,11 @@ jobs:
     - name: Build solution
       run: dotnet build HealthCheck.sln --configuration Release --no-restore
 
+    - name: Run tests
+      run: dotnet test HealthCheck.sln --configuration Release --no-build
+
     - name: Pack project
       run: dotnet pack ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o ./nupkg
 
     - name: Publish to NuGet
-      run: dotnet nuget push D:\a\AspNetCore.Diagnostics.HealthChecks.Background\AspNetCore.Diagnostics.HealthChecks.Background\nupkg\*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
+      run: dotnet nuget push ./nupkg/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
