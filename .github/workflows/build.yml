@@ -31,4 +31,9 @@ jobs:
       run: dotnet pack ./AspNetCore.Diagnostics.HealthChecks.Background/AspNetCore.Diagnostics.HealthChecks.Background.csproj --configuration Release --no-build -o ./nupkg
 
     - name: Publish to NuGet
-      run: dotnet nuget push ./nupkg/*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+      shell: pwsh
+      run: |
+        Get-ChildItem ./nupkg/*.nupkg | ForEach-Object {
+          dotnet nuget push $_.FullName -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json --skip-duplicate
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        }
